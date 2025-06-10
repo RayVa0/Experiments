@@ -1,8 +1,9 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<stdint.h>
-#include<string.h>
-#include<inttypes.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <string.h>
+#include <inttypes.h>
+#include <time.h>
 
 
 
@@ -77,17 +78,22 @@ int main(int argc, char* argv[]) {
   bool f = 1;
   char* rec = "-r";
   char* noloop = "-nl";
+  char* help = "-h";
   int i = 0;
 
   if (argc > 4 ) return 1;
 
   if (argc == 2) {
     x = atoi(argv[1]);
-  }
 
+    if (strcmp(argv[1], help) == 0) {
+      printf("Pass the num first, pass -f or -r for fast or recursive and then pass -nl if you only want one loop\n if you only pass the num it does fast else you must pass evrything in the order specified");
+      return 1;
+    }
+  }
   if (argc == 3) {
     x = atoi(argv[1]);
-    if(strcmp(argv[2],rec) == 0) f = 0;
+    if (strcmp(argv[2],rec) == 0) f = 0;
   }
   
   if (argc == 4) {
@@ -96,24 +102,29 @@ int main(int argc, char* argv[]) {
     if ( strcmp(argv[3],noloop) == 0 ) i = x;
   }
 
-  if (x > 200)
+  if (x > 185) {puts("we are brushing against the limitations of 128 bit unsigned integers output erronious"); i = x; }
   
   if(f) {
     printf("using fast fib\n");
     for(; i <= x; i++){
+      clock_t start_f = clock();
       y = fast_fib(i);
+      clock_t stop_f = clock();
       if (y < 0) { puts("integer overflow"); return 1;}
       printf("-- %2d -- Computed at: ", i);
       print_uint128(y);
+      printf(", in %lf seconds", (double)(stop_f - start_f) / CLOCKS_PER_SEC);
       puts("");
     }
   }
   else {
     printf("using oh so slow fib(recusrive)\n");
     for(; i <= x; i++){
+        clock_t start_r = clock();
         y = fib(i, i, 1);
+        clock_t stop_r = clock();
         if (y < 0) { puts("integer overflow"); return 1;}
-        printf("-- %2d -- Computed at: %" PRIu64 "\n", i, y);
+        printf("-- %2d -- Computed at: %" PRIu64 ", in %lf seconds\n", i, y, (double)(stop_r - start_r) / CLOCKS_PER_SEC);
 
       }
   }
