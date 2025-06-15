@@ -36,7 +36,6 @@ uint64_t fib(int n, int i, bool init) {
 __uint128_t fast_fib(uint64_t n) {
   if ( n == 0 ) return 0;
   if ( n == 1 ) return 1;
-  if ( n == 1 ) return 1;
 
   __uint128_t a = 0;
   __uint128_t b = 1;
