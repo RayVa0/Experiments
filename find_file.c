@@ -17,22 +17,18 @@ int main(int argc, char *argv[]) {
 
   int i = stringSize(argv[1]);
   int slash_1 = 0;
-  int slash_2 = 0;
 
   for (; i >= 0; i--) {
-    int slash_count = 0;
     if (argv[1][i] == '/') {
-      if (slash_2 == 0)
-        slash_2 = i;
-      else {
-        slash_1 = i;
-        break;
-      }
+      slash_1 = i;
+      break;
     }
   }
 
-  for (int i = slash_1 + 1; i < slash_2; i++) {
-    printf("%c", argv[1][i]);
+  // printf("%s %d", argv[1], slash_1);
+
+  for (int j = slash_1 + 1; j < stringSize(argv[1]); j++) {
+    printf("%c", argv[1][j]);
   }
 
   return 0;
